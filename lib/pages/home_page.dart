@@ -28,6 +28,16 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        shape: CircleBorder(),
+        onPressed: () {},
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30.0,
+        ),
+      ),
     );
   }
 }
