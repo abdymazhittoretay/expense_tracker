@@ -13,6 +13,8 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+
+  String selectedCategory = "Other";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +65,9 @@ class _HomePageState extends State<HomePage> {
                     controller: _nameController,
                     decoration: InputDecoration(
                         hintText: "Expense name",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                        ),
                         border: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black)),
                         focusedBorder: UnderlineInputBorder(
@@ -72,11 +77,44 @@ class _HomePageState extends State<HomePage> {
                     controller: _priceController,
                     decoration: InputDecoration(
                         hintText: "Price",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                        ),
                         border: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black)),
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black))),
                   ),
+                  DropdownButtonFormField(
+                      dropdownColor: Colors.white,
+                      value: selectedCategory,
+                      decoration: InputDecoration(
+                        label: Text("Choose category"),
+                        labelStyle: TextStyle(color: Colors.blue),
+                        border: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                      ),
+                      items: [
+                        DropdownMenuItem(value: "Food", child: Text("Food")),
+                        DropdownMenuItem(
+                            value: "Personal", child: Text("Personal")),
+                        DropdownMenuItem(
+                            value: "Entertainment",
+                            child: Text("Entertainment")),
+                        DropdownMenuItem(
+                            value: "Transportation",
+                            child: Text("Transportation")),
+                        DropdownMenuItem(value: "Other", child: Text("Other")),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategory = value as String;
+                        });
+                      }),
                 ],
               ),
               actions: [
@@ -91,6 +129,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     _nameController.clear();
                     _priceController.clear();
+                    selectedCategory = "Other";
                     setState(() {});
                     Navigator.of(context).pop();
                   },
@@ -110,11 +149,12 @@ class _HomePageState extends State<HomePage> {
                       expenses.add(ExpenseModel(
                           name: _nameController.text,
                           price: double.tryParse(_priceController.text) ?? 0.0,
-                          category: "Other",
+                          category: selectedCategory,
                           date: DateTime.now()));
                     }
                     _nameController.clear();
                     _priceController.clear();
+                    selectedCategory = "Other";
                     setState(() {});
                     Navigator.of(context).pop();
                   },
