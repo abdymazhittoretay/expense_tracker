@@ -27,23 +27,16 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           final ExpenseModel expense = expenses[index];
           return ListTile(
-            title: Text(expense.name),
-            subtitle: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "\$${expense.price}",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  "${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
+            title: Text(
+              expense.name,
+              style: TextStyle(fontSize: 16.0),
+            ),
+            subtitle: Text(
+              "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
+              style: TextStyle(color: Colors.grey, fontSize: 16.0),
             ),
             trailing: Text(
-              expense.category,
+              "-\$${expense.price}",
               style: TextStyle(fontSize: 16.0),
             ),
           );
