@@ -1,5 +1,6 @@
 import 'package:expense_tracker/models/expense_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,18 +30,34 @@ class _HomePageState extends State<HomePage> {
               itemCount: expenses.length,
               itemBuilder: (context, index) {
                 final ExpenseModel expense = expenses[index];
-                return ListTile(
-                  title: Text(
-                    expense.name,
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  subtitle: Text(
-                    "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
-                    style: TextStyle(color: Colors.grey, fontSize: 16.0),
-                  ),
-                  trailing: Text(
-                    "-\$${expense.price}",
-                    style: TextStyle(fontSize: 16.0),
+                return Slidable(
+                  endActionPane: ActionPane(motion: ScrollMotion(), children: [
+                    CustomSlidableAction(
+                      backgroundColor: Colors.red,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                      onPressed: (context) {
+                        setState(() {
+                          expenses.removeAt(index);
+                        });
+                      },
+                    ),
+                  ]),
+                  child: ListTile(
+                    title: Text(
+                      expense.name,
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    subtitle: Text(
+                      "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
+                      style: TextStyle(color: Colors.grey, fontSize: 16.0),
+                    ),
+                    trailing: Text(
+                      "-\$${expense.price}",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
                   ),
                 );
               },
