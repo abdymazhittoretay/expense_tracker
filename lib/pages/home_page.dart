@@ -24,26 +24,33 @@ class _HomePageState extends State<HomePage> {
         title: Text("Budget Tracker"),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: expenses.length,
-        itemBuilder: (context, index) {
-          final ExpenseModel expense = expenses[index];
-          return ListTile(
-            title: Text(
-              expense.name,
-              style: TextStyle(fontSize: 16.0),
+      body: expenses.isNotEmpty
+          ? ListView.builder(
+              itemCount: expenses.length,
+              itemBuilder: (context, index) {
+                final ExpenseModel expense = expenses[index];
+                return ListTile(
+                  title: Text(
+                    expense.name,
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  subtitle: Text(
+                    "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
+                    style: TextStyle(color: Colors.grey, fontSize: 16.0),
+                  ),
+                  trailing: Text(
+                    "-\$${expense.price}",
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                );
+              },
+            )
+          : Center(
+              child: Text(
+                "There are no expenses yet.",
+                style: TextStyle(color: Colors.grey, fontSize: 16.0),
+              ),
             ),
-            subtitle: Text(
-              "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
-              style: TextStyle(color: Colors.grey, fontSize: 16.0),
-            ),
-            trailing: Text(
-              "-\$${expense.price}",
-              style: TextStyle(fontSize: 16.0),
-            ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         shape: CircleBorder(),
