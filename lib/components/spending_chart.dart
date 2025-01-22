@@ -8,6 +8,15 @@ class SpendingChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final spending = <String, double>{};
+
+    for (ExpenseModel expense in expenses) {
+      spending.update(expense.category, (value) => value + expense.price,
+          ifAbsent: () => expense.price);
+    }
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      height: 360,
+    );
   }
 }
