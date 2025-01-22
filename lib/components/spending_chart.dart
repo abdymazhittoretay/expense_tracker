@@ -16,28 +16,59 @@ class SpendingChart extends StatelessWidget {
           ifAbsent: () => expense.price);
     }
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(15.0),
       height: 360,
-      child: PieChart(
-        PieChartData(
-            sections: spending
-                .map(
-                  (category, totalPrice) => MapEntry(
-                    category,
-                    PieChartSectionData(
-                        color: selectColor(category),
-                        radius: 100.0,
-                        title: "\$${totalPrice.toStringAsFixed(2)}",
-                        titleStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold),
-                        value: totalPrice),
-                  ),
-                )
-                .values
+      child: Column(
+        children: [
+          Expanded(
+            child: PieChart(
+              PieChartData(
+                  sections: spending
+                      .map(
+                        (category, totalPrice) => MapEntry(
+                          category,
+                          PieChartSectionData(
+                              color: selectColor(category),
+                              radius: 100.0,
+                              title: "\$${totalPrice.toStringAsFixed(1)}",
+                              titleStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              value: totalPrice),
+                        ),
+                      )
+                      .values
+                      .toList(),
+                  sectionsSpace: 0),
+            ),
+          ),
+          SizedBox(
+            height: 15.0,
+          ),
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            children: spending.keys
+                .map((category) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          height: 15.0,
+                          width: 15.0,
+                          color: selectColor(category),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        Text(
+                          category,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ))
                 .toList(),
-            sectionsSpace: 0),
+          )
+        ],
       ),
     );
   }
@@ -51,7 +82,7 @@ class SpendingChart extends StatelessWidget {
         return Colors.purple;
       case "Entertainment":
         return Colors.red;
-      case "Trasnportation":
+      case "Transportation":
         return Colors.blue;
       case "Other":
         return Colors.grey;
