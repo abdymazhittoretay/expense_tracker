@@ -1,3 +1,4 @@
+import 'package:expense_tracker/components/spending_chart.dart';
 import 'package:expense_tracker/models/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -27,9 +28,11 @@ class _HomePageState extends State<HomePage> {
       ),
       body: expenses.isNotEmpty
           ? ListView.builder(
-              itemCount: expenses.length,
+              itemCount: expenses.length + 1,
               itemBuilder: (context, index) {
-                final ExpenseModel expense = expenses[index];
+                if (index == 0) return SpendingChart(expenses: expenses);
+
+                final ExpenseModel expense = expenses[index - 1];
                 return Slidable(
                   endActionPane: ActionPane(motion: ScrollMotion(), children: [
                     CustomSlidableAction(
