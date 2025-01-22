@@ -23,6 +23,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        surfaceTintColor: Colors.white,
         title: Text("Budget Tracker"),
         centerTitle: true,
       ),
