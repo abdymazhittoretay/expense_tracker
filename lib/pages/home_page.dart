@@ -27,43 +27,50 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: expenses.isNotEmpty
-          ? ListView.builder(
-              itemCount: expenses.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) return SpendingChart(expenses: expenses);
-
-                final ExpenseModel expense = expenses[index - 1];
-                return Slidable(
-                  endActionPane: ActionPane(motion: ScrollMotion(), children: [
-                    CustomSlidableAction(
-                      backgroundColor: Colors.red,
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                      onPressed: (context) {
-                        setState(() {
-                          expenses.removeAt(index);
-                        });
-                      },
-                    ),
-                  ]),
-                  child: ListTile(
-                    title: Text(
-                      expense.name,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                    subtitle: Text(
-                      "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
-                      style: TextStyle(color: Colors.grey, fontSize: 16.0),
-                    ),
-                    trailing: Text(
-                      "-\$${expense.price}",
-                      style: TextStyle(fontSize: 16.0),
-                    ),
+          ? Column(
+              children: [
+                SpendingChart(expenses: expenses),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: expenses.length,
+                    itemBuilder: (context, index) {
+                      final ExpenseModel expense = expenses[index];
+                      return Slidable(
+                        endActionPane:
+                            ActionPane(motion: ScrollMotion(), children: [
+                          CustomSlidableAction(
+                            backgroundColor: Colors.red,
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                            onPressed: (context) {
+                              setState(() {
+                                expenses.removeAt(index);
+                              });
+                            },
+                          ),
+                        ]),
+                        child: ListTile(
+                          title: Text(
+                            expense.name,
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          subtitle: Text(
+                            "${expense.category}, ${expense.date.day.toString().padLeft(2, "0")}.${expense.date.month.toString().padLeft(2, "0")}.${expense.date.year}",
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 16.0),
+                          ),
+                          trailing: Text(
+                            "-\$${expense.price}",
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             )
           : Center(
               child: Text(
