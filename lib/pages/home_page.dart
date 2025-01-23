@@ -1,4 +1,5 @@
 import 'package:expense_tracker/components/spending_chart.dart';
+import 'package:expense_tracker/database/expense_database.dart';
 import 'package:expense_tracker/models/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -11,12 +12,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<ExpenseModel> expenses = [];
+  ExpenseDatabase db = ExpenseDatabase();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
 
   String selectedCategory = "Other";
+
+  @override
+  void initState() {
+    db.loadData();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +37,15 @@ class _HomePageState extends State<HomePage> {
         title: Text("Budget Tracker"),
         centerTitle: true,
       ),
-      body: expenses.isNotEmpty
+      body: db.expenses.isNotEmpty
           ? Column(
               children: [
-                SpendingChart(expenses: expenses),
+                SpendingChart(expenses: db.expenses),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: expenses.length,
+                    itemCount: db.expenses.length,
                     itemBuilder: (context, index) {
-                      final ExpenseModel expense = expenses[index];
+                      final ExpenseModel expense = db.expenses[index];
                       return Slidable(
                         endActionPane:
                             ActionPane(motion: ScrollMotion(), children: [
@@ -48,8 +57,9 @@ class _HomePageState extends State<HomePage> {
                             ),
                             onPressed: (context) {
                               setState(() {
-                                expenses.removeAt(index);
+                                db.expenses.removeAt(index);
                               });
+                              db.saveData();
                             },
                           ),
                         ]),
@@ -182,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                     if (_nameController.text.isNotEmpty &&
                         _priceController.text.isNotEmpty &&
                         double.tryParse(_priceController.text) != null) {
-                      expenses.insert(
+                      db.expenses.insert(
                           0,
                           ExpenseModel(
                               name: _nameController.text,
@@ -190,6 +200,7 @@ class _HomePageState extends State<HomePage> {
                                   double.tryParse(_priceController.text) ?? 0.0,
                               category: selectedCategory,
                               date: DateTime.now()));
+                      db.saveData();
                     }
                     _nameController.clear();
                     _priceController.clear();

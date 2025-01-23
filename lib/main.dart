@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
 
-  boxExpenses = await Hive.openBox("expenseBox");
+  boxExpenses = await Hive.openBox("boxExpense");
   runApp(const MyApp());
 }
 
