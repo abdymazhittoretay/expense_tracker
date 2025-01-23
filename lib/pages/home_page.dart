@@ -173,11 +173,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onPressed: () {
-                    _nameController.clear();
-                    _priceController.clear();
-                    selectedCategory = "Other";
-                    setState(() {});
-                    Navigator.of(context).pop();
+                    cancelDialog();
                   },
                 ),
                 TextButton(
@@ -189,24 +185,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onPressed: () {
-                    if (_nameController.text.isNotEmpty &&
-                        _priceController.text.isNotEmpty &&
-                        double.tryParse(_priceController.text) != null) {
-                      db.expenses.insert(
-                          0,
-                          ExpenseModel(
-                              name: _nameController.text,
-                              price:
-                                  double.tryParse(_priceController.text) ?? 0.0,
-                              category: selectedCategory,
-                              date: DateTime.now()));
-                      db.saveData();
-                    }
-                    _nameController.clear();
-                    _priceController.clear();
-                    selectedCategory = "Other";
-                    setState(() {});
-                    Navigator.of(context).pop();
+                    addExpense();
                   },
                 ),
               ],
@@ -220,5 +199,34 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  // Functions
+  void addExpense() {
+    if (_nameController.text.isNotEmpty &&
+        _priceController.text.isNotEmpty &&
+        double.tryParse(_priceController.text) != null) {
+      db.expenses.insert(
+          0,
+          ExpenseModel(
+              name: _nameController.text,
+              price: double.tryParse(_priceController.text) ?? 0.0,
+              category: selectedCategory,
+              date: DateTime.now()));
+      db.saveData();
+    }
+    _nameController.clear();
+    _priceController.clear();
+    selectedCategory = "Other";
+    setState(() {});
+    Navigator.of(context).pop();
+  }
+
+  void cancelDialog() {
+    _nameController.clear();
+    _priceController.clear();
+    selectedCategory = "Other";
+    setState(() {});
+    Navigator.of(context).pop();
   }
 }
